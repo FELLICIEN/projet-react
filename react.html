@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechShop - Votre boutique en ligne</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+            --primary: #4a6da7;
+            --secondary: #7b9acc;
+            --accent: #f39c12;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #28a745;
+            --danger: #dc3545;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent);
+            color: var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+        }
+
+        /* Products Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .product-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1.5rem 0;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .stat-card p {
+            color: var(--gray);
+        }
+
+        .dashboard-table {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            background-color: var(--light);
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: #e6f4ea;
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background-color: #fff8e1;
+            color: #ffc107;
+        }
+
+        .badge-danger {
+            background-color: #fde7e9;
+            color: var(--danger);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .sidebar {
+                width: 60px;
+                padding: 1rem 0;
+            }
+
+            .sidebar-header h2,
+            .sidebar-menu span {
+                display: none;
+            }
+
+            .sidebar-menu a {
+                text-align: center;
+                padding: 0.8rem 0;
+            }
+
+            .sidebar-menu i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+
+            .main-content {
+                margin-left: 60px;
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            nav ul li {
+                margin-left: 0.8rem;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Données de démonstration
+        const productsData = [
+            {
+                id: 1,
+                name: "Smartphone XYZ",
+                price: 5000,
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Un smartphone haut de gamme avec un appareil photo exceptionnel et une autonomie de batterie prolongée."
+            },
+            {
+                id: 2,
+                name: "Écouteurs Sans Fil",
+                price: 2000,
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Des écouteurs sans fil avec une qualité sonore supérieure et une réduction de bruit active."
+            },
+            {
+                id: 3,
+                name: "Montre Connectée",
+                price: 2000,
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Une montre connectée avec suivi de la condition physique, notifications et autonomie de 7 jours."
+            },
+            {
+                id: 4,
+                name: "Tablette Ultimate",
+                price: 4000,
+                image: "https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Une tablette puissante avec un écran Retina, parfaite pour le travail et les loisirs."
+            },
+            {
+                id: 5,
+                name: "Console de Jeu Portable",
+                price: 3000,
+                image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Console de jeu portable avec une bibliothèque de jeux étendue et des graphismes HD."
+            },
+            {
+                id: 6,
+                name: "Enceinte Bluetooth",
+                price: 8000,
+                image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Enceinte Bluetooth avec un son puissant et une autonomie de 24 heures."
+            }
+        ];
+
+        const ordersData = [
+            { id: 1001, customer: "Jean Dupont", date: "2023-05-15", amount: 5000, status: "Livré" },
+            { id: 1002, customer: "Marie Martin", date: "2023-05-16", amount: 7000, status: "Expédié" },
+            { id: 1003, customer: "Pierre Leroy", date: "2023-05-17", amount: 3000, status: "En traitement" },
+            { id: 1004, customer: "Sophie Lambert", date: "2023-05-18", amount: 4000, status: "Livré" },
+            { id: 1005, customer: "Thomas Bernard", date: "2023-05-19", amount: 2000, status: "Expédié" }
+        ];
+
+        const usersData = [
+            { id: 1, name: "Jean Dupont", email: "jean.dupont@email.com", role: "Client", joinDate: "2022-03-15" },
+            { id: 2, name: "Marie Martin", email: "marie.martin@email.com", role: "Client", joinDate: "2022-05-20" },
+            { id: 3, name: "Admin User", email: "admin@techshop.com", role: "Administrateur", joinDate: "2022-01-10" },
+            { id: 4, name: "Pierre Leroy", email: "pierre.leroy@email.com", role: "Client", joinDate: "2022-08-05" },
+            { id: 5, name: "Sophie Lambert", email: "sophie.lambert@email.com", role: "Client", joinDate: "2023-01-22" }
+        ];
+
+        // Composant Header
+        function Header({ cartItemsCount, currentView, setCurrentView }) {
+            return (
+                <header>
+                    <div className="container header-content">
+                        <div className="logo">
+                            <i className="fas fa-laptop-code"></i>
+                            <span>TechShop</span>
+                        </div>
+                        <nav>
+                            <ul>
+                                <li><a href="#" className={currentView === 'home' ? 'active' : ''} onClick={() => setCurrentView('home')}>Accueil</a></li>
+                                <li><a href="#" className={currentView === 'products' ? 'active' : ''} onClick={() => setCurrentView('products')}>Produits</a></li>
+                                <li><a href="#" className={currentView === 'dashboard' ? 'active' : ''} onClick={() => setCurrentView('dashboard')}>Admin</a></li>
+                                <li>
+                                    <a href="#" className="cart-icon" onClick={() => setCurrentView('cart')}>
+                                        <i className="fas fa-shopping-cart"></i>
+                                        {cartItemsCount > 0 && <span className="cart-count">{cartItemsCount}</span>}
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+            );
+        }
+
+        // Composant Hero
+        function Hero() {
+            return (
+                <section className="hero">
+                    <div className="container">
+                        <h1>Bienvenue chez TechShop</h1>
+                        <p>Découvrez les derniers produits technologiques aux meilleurs prix. Livraison rapide et gratuite à partir de 500 FCFA d'achat.</p>
+                        <a href="#products" className="btn">Découvrir nos produits</a>
+                    </div>
+                </section>
+            );
+        }
+
+        // Composant ProductCard
+        function ProductCard({ product, onAddToCart }) {
+            return (
+                <div className="product-card">
+                    <img src={product.image} alt={product.name} className="product-image" />
+                    <div className="product-info">
+                        <h3 className="product-title">{product.name}</h3>
+                        <p className="product-price">{product.price.toFixed(2)} FCFA</p>
+                        <p className="product-description">{product.description}</p>
+                        <button className="btn" onClick={() => onAddToCart(product)}>
+                            <i className="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Composant Products
+        function Products({ products, onAddToCart }) {
+            return (
+                <section id="products" className="container">
+                    <h2 className="section-title">Nos Produits</h2>
+                    <div className="products-grid">
+                        {products.map(product => (
+                            <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />
+                        ))}
+                    </div>
+                </section>
+            );
+        }
+
+        // Composant Cart
+        function Cart({ cartItems, onUpdateQuantity, onRemoveItem }) {
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            return (
+                <div className="container">
+                    <h2 className="section-title">Votre Panier</h2>
+                    {cartItems.length === 0 ? (
+                        <p style={{ textAlign: 'center', margin: '2rem 0' }}>Votre panier est vide.</p>
+                    ) : (
+                        <div className="dashboard-table">
+                            <div className="table-header">
+                                <h3>Articles dans votre panier</h3>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Produit</th>
+                                        <th>Prix</th>
+                                        <th>Quantité</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {cartItems.map(item => (
+                                        <tr key={item.id}>
+                                            <td>
+                                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                    <img src={item.image} alt={item.name} style={{ width: '50px', height: '50px', objectFit: 'cover', marginRight: '10px' }} />
+                                                    {item.name}
+                                                </div>
+                                            </td>
+                                            <td>{item.price.toFixed(2)} FCFA</td>
+                                            <td>
+                                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                    <button onClick={() => onUpdateQuantity(item.id, item.quantity - 1)} style={{ padding: '0.2rem 0.5rem', marginRight: '0.5rem' }}>-</button>
+                                                    <span>{item.quantity}</span>
+                                                    <button onClick={() => onUpdateQuantity(item.id, item.quantity + 1)} style={{ padding: '0.2rem 0.5rem', marginLeft: '0.5rem' }}>+</button>
+                                                </div>
+                                            </td>
+                                            <td>{(item.price * item.quantity).toFixed(2)} FCFA</td>
+                                            <td>
+                                                <button onClick={() => onRemoveItem(item.id)} style={{ color: '#dc3545', background: 'none', border: 'none', cursor: 'pointer' }}>
+                                                    <i className="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colSpan="3" style={{ textAlign: 'right', fontWeight: 'bold' }}>Total:</td>
+                                        <td colSpan="2" style={{ fontWeight: 'bold' }}>{total.toFixed(2)} FCFA</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Composant Dashboard
+        function Dashboard() {
+            const [activeTab, setActiveTab] = React.useState('overview');
+
+            return (
+                <div className="dashboard">
+                    <div className="sidebar">
+                        <div className="sidebar-header">
+                            <h2><i className="fas fa-user-shield"></i> Admin Panel</h2>
+                        </div>
+                        <ul className="sidebar-menu">
+                            <li>
+                                <a href="#" className={activeTab === 'overview' ? 'active' : ''} onClick={() => setActiveTab('overview')}>
+                                    <i className="fas fa-chart-line"></i> <span>Aperçu</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className={activeTab === 'products' ? 'active' : ''} onClick={() => setActiveTab('products')}>
+                                    <i className="fas fa-box-open"></i> <span>Produits</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className={activeTab === 'orders' ? 'active' : ''} onClick={() => setActiveTab('orders')}>
+                                    <i className="fas fa-shopping-cart"></i> <span>Commandes</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className={activeTab === 'users' ? 'active' : ''} onClick={() => setActiveTab('users')}>
+                                    <i className="fas fa-users"></i> <span>Utilisateurs</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className="main-content">
+                        {activeTab === 'overview' && <DashboardOverview />}
+                        {activeTab === 'products' && <DashboardProducts products={productsData} />}
+                        {activeTab === 'orders' && <DashboardOrders orders={ordersData} />}
+                        {activeTab === 'users' && <DashboardUsers users={usersData} />}
+                    </div>
+                </div>
+            );
+        }
+
+        // Composant DashboardOverview
+        function DashboardOverview() {
+            return (
+                <>
+                    <h2 className="section-title">Aperçu du Tableau de Bord</h2>
+                    <div className="stats-grid">
+                        <div className="stat-card">
+                            <i className="fas fa-shopping-cart"></i>
+                            <h3>1000</h3>
+                            <p>Commandes ce mois</p>
+                        </div>
+                        <div className="stat-card">
+                            <i className="fas fa-users"></i>
+                            <h3>5000</h3>
+                            <p>Utilisateurs inscrits</p>
+                        </div>
+                        <div className="stat-card">
+                            <i className="fas fa-euro-sign"></i>
+                            <h3>4000 FCFA</h3>
+                            <p>Revenus totaux</p>
+                        </div>
+                        <div className="stat-card">
+                            <i className="fas fa-box-open"></i>
+                            <h3>2000</h3>
+                            <p>Produits en stock</p>
+                        </div>
+                    </div>
+
+                    <div className="dashboard-table">
+                        <div className="table-header">
+                            <h3>Commandes Récentes</h3>
+                            <a href="#" style={{ color: 'var(--primary)', textDecoration: 'none' }}>Voir tout</a>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Référence</th>
+                                    <th>Client</th>
+                                    <th>Date</th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {ordersData.slice(0, 3).map(order => (
+                                    <tr key={order.id}>
+                                        <td>#{order.id}</td>
+                                        <td>{order.customer}</td>
+                                        <td>{order.date}</td>
+                                        <td>{order.amount.toFixed(2)} FCFA</td>
+                                        <td>
+                                            <span className={`badge ${order.status === 'Livré' ? 'badge-success' :
+                                                order.status === 'Expédié' ? 'badge-warning' :
+                                                    'badge-danger'
+                                                }`}>
+                                                {order.status}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
+            );
+        }
+
+        // Composant DashboardProducts
+        function DashboardProducts({ products }) {
+            return (
+                <>
+                    <div className="table-header">
+                        <h2>Gestion des Produits</h2>
+                        <button className="btn">
+                            <i className="fas fa-plus"></i> Nouveau Produit
+                        </button>
+                    </div>
+
+                    <div className="dashboard-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Nom</th>
+                                    <th>Prix</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.map(product => (
+                                    <tr key={product.id}>
+                                        <td>
+                                            <img src={product.image} alt={product.name} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                                        </td>
+                                        <td>{product.name}</td>
+                                        <td>{product.price.toFixed(2)} FCFA</td>
+                                        <td>{product.description.substring(0, 60)}...</td>
+                                        <td>
+                                            <button style={{ color: 'var(--primary)', marginRight: '1rem', background: 'none', border: 'none', cursor: 'pointer' }}>
+                                                <i className="fas fa-edit"></i>
+                                            </button>
+                                            <button style={{ color: 'var(--danger)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                                                <i className="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
+            );
+        }
+
+        // Composant DashboardOrders
+        function DashboardOrders({ orders }) {
+            return (
+                <>
+                    <div className="table-header">
+                        <h2>Gestion des Commandes</h2>
+                    </div>
+
+                    <div className="dashboard-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Référence</th>
+                                    <th>Client</th>
+                                    <th>Date</th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {orders.map(order => (
+                                    <tr key={order.id}>
+                                        <td>#{order.id}</td>
+                                        <td>{order.customer}</td>
+                                        <td>{order.date}</td>
+                                        <td>{order.amount.toFixed(2)} €</td>
+                                        <td>
+                                            <span className={`badge ${order.status === 'Livré' ? 'badge-success' :
+                                                order.status === 'Expédié' ? 'badge-warning' :
+                                                    'badge-danger'
+                                                }`}>
+                                                {order.status}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button style={{ color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                                                <i className="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
+            );
+        }
+
+        // Composant DashboardUsers
+        function DashboardUsers({ users }) {
+            return (
+                <>
+                    <div className="table-header">
+                        <h2>Gestion des Utilisateurs</h2>
+                        <button className="btn">
+                            <i className="fas fa-plus"></i> Nouvel Utilisateur
+                        </button>
+                    </div>
+
+                    <div className="dashboard-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Rôle</th>
+                                    <th>Date d'inscription</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map(user => (
+                                    <tr key={user.id}>
+                                        <td>{user.name}</td>
+                                        <td>{user.email}</td>
+                                        <td>
+                                            <span className={`badge ${user.role === 'Administrateur' ? 'badge-success' : 'badge-warning'}`}>
+                                                {user.role}
+                                            </span>
+                                        </td>
+                                        <td>{user.joinDate}</td>
+                                        <td>
+                                            <button style={{ color: 'var(--primary)', marginRight: '1rem', background: 'none', border: 'none', cursor: 'pointer' }}>
+                                                <i className="fas fa-edit"></i>
+                                            </button>
+                                            <button style={{ color: 'var(--danger)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                                                <i className="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
+            );
+        }
+
+        // Composant Footer
+        function Footer() {
+            return (
+                <footer>
+                    <div className="container footer-content">
+                        <div className="footer-section">
+                            <h3>TechShop</h3>
+                            <p>Votre boutique en ligne pour tous les gadgets technologiques les plus récents et les plus innovants.</p>
+                        </div>
+                        <div className="footer-section">
+                            <h3>Liens Rapides</h3>
+                            <ul>
+                                <li><a href="#">Accueil</a></li>
+                                <li><a href="#">Produits</a></li>
+                                <li><a href="#">À propos</a></li>
+                                <li><a href="#">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div className="footer-section">
+                            <h3>Contactez-nous</h3>
+                            <ul>
+                                <li><i className="fas fa-map-marker-alt"></i> 300 Rue de la Tech, Moundou</li>
+                                <li><i className="fas fa-phone"></i> +235 60 07 71 50</li>
+                                <li><i className="fas fa-envelope"></i> contact@techshop.td</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="container footer-bottom">
+                        <p>&copy; 2025 TechShop. Tous droits réservés.</p>
+                    </div>
+                </footer>
+            );
+        }
+
+        // Composant principal App
+        function App() {
+            const [currentView, setCurrentView] = React.useState('home');
+            const [cartItems, setCartItems] = React.useState([]);
+
+            const addToCart = (product) => {
+                const existingItem = cartItems.find(item => item.id === product.id);
+
+                if (existingItem) {
+                    setCartItems(cartItems.map(item =>
+                        item.id === product.id
+                            ? { ...item, quantity: item.quantity + 1 }
+                            : item
+                    ));
+                } else {
+                    setCartItems([...cartItems, { ...product, quantity: 1 }]);
+                }
+            };
+
+            const updateQuantity = (productId, newQuantity) => {
+                if (newQuantity < 1) {
+                    removeFromCart(productId);
+                    return;
+                }
+
+                setCartItems(cartItems.map(item =>
+                    item.id === productId
+                        ? { ...item, quantity: newQuantity }
+                        : item
+                ));
+            };
+
+            const removeFromCart = (productId) => {
+                setCartItems(cartItems.filter(item => item.id !== productId));
+            };
+
+            const cartItemsCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+
+            return (
+                <div>
+                    <Header
+                        cartItemsCount={cartItemsCount}
+                        currentView={currentView}
+                        setCurrentView={setCurrentView}
+                    />
+
+                    {currentView === 'home' && (
+                        <>
+                            <Hero />
+                            <Products products={productsData} onAddToCart={addToCart} />
+                        </>
+                    )}
+
+                    {currentView === 'products' && (
+                        <Products products={productsData} onAddToCart={addToCart} />
+                    )}
+
+                    {currentView === 'cart' && (
+                        <Cart
+                            cartItems={cartItems}
+                            onUpdateQuantity={updateQuantity}
+                            onRemoveItem={removeFromCart}
+                        />
+                    )}
+
+                    {currentView === 'dashboard' && <Dashboard />}
+
+                    <Footer />
+                </div>
+            );
+        }
+
+        // Rendu de l'application
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>
